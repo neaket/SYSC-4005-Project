@@ -1,4 +1,4 @@
-package policies;
+package sysc4005.policies;
 
 import sysc4005.SystemData;
 

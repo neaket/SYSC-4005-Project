@@ -1,4 +1,4 @@
-package policies;
+package sysc4005.policies;
 
 import java.util.ArrayList;
 
@@ -15,9 +15,9 @@ public final class RandomizedPolicy extends AbstractPolicy {
 	@Override
 	public void allocateServer(int t) {
 		ArrayList<Integer> connectedQueues = new ArrayList<Integer>();
-		for (int i = 0; i < data.getN(); i++) {
-			if (data.isConnected(i, t)) {
-				connectedQueues.add(i);
+		for (int n = 0; n < data.getN(); n++) {
+			if (data.isConnected(n, t)) {
+				connectedQueues.add(n);
 			}
 		}		
 		

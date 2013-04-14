@@ -1,4 +1,4 @@
-package policies;
+package sysc4005.policies;
 
 import java.util.ArrayList;
 
@@ -15,14 +15,14 @@ public final class LongestConnectedQueuePolicy extends AbstractPolicy {
 		ArrayList<Integer> longestQueues = new ArrayList<Integer>();
 		
 		int longestLength = 0; 
-		for (int i = 0; i < data.getN(); i++ ) {
-			if (data.isConnected(i, t) && !data.isEmpty(i, t)) {
-				int length = data.getQueueLength(i, t);
+		for (int n = 0; n < data.getN(); n++ ) {
+			if (data.isConnected(n, t) && !data.isEmpty(n, t)) {
+				int length = data.getQueueLength(n, t);
 				if (length > longestLength) {
 					longestQueues.clear();
-					longestQueues.add(i);
+					longestQueues.add(n);
 				} else if (length == longestLength) {
-					longestQueues.add(i);
+					longestQueues.add(n);
 				}
 			}
 		}
@@ -37,10 +37,6 @@ public final class LongestConnectedQueuePolicy extends AbstractPolicy {
 				
 				data.setServerState(t, longestQueues.get(n));	
 			}
-		}
-		
-		
-		
+		}		
 	}
-
 }
