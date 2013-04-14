@@ -22,8 +22,17 @@ public class SimulationSystem {
 	private AbstractPolicy policy;
 	private boolean[][] queueIsconnected;
 	
-	private int debugTotalAn = 0;
 	
+	
+	/**
+	 * Construct the Simulation System.
+	 * 
+	 * @param stream A stream of random numbers
+	 * @param timeSlotCount The maximum time slots
+	 * @param probability The probability that a queue is connected to the server
+	 * @param lambda The parameter in bernoulli used to determine how often new tasks are added to a queue 
+	 * @param policy The scheduling policy
+	 */
 	public SimulationSystem(AbstractRandomStream stream, int timeSlotCount, double probability[], double lambda, AbstractPolicy policy) {
 		assert(N == probability.length);
 		
@@ -40,42 +49,68 @@ public class SimulationSystem {
 	}
 	
 	
+	/**
+	 * @return The number of queues in the system
+	 */
 	public int getN() {
 		return N;
 	}
 
-	public double getProbability(int n) {
+	/**
+	 * @param n The queue index
+	 * @return The probability that queue n is connected.
+	 */
+	private double getProbability(int n) {
 		return probability[n];
 	}
 	
+	/**
+	 * @param n The queue index
+	 * @param t The time slot number
+	 * @return True if the queue is connected to the server at the time slot; otherwise false
+	 */
 	public boolean isConnected(int n, int t) {
 		return queueIsconnected[n][t];
 	}
 	
+	/**
+	 * @param t The time slot number
+	 * @param state The state, either SERVER_IDLE or the index of the queue that is connected
+	 */
 	public void setServerState(int t, int state) {
-		this.serverStates[t] = state;
-		
+		this.serverStates[t] = state;		
 		//System.out.println("Server state at " + t + " is " + state);
 	}
 
 
+	/**
+	 * @param n The index of the queue
+	 * @param t The time slot number
+	 * @return True if the queue is empty at the time slot, otherwise false
+	 */
 	public boolean isEmpty(int n, int t) {
 		if (t < 0) return true;
 		return getQueueLength(n, t) == 0;
 	}
 	
+	/**
+	 * Simulates the system.  Note this method can only be called once.
+	 */
 	public void simulateSystem() {
 		for (int t = 0; t < timeSlotCount; t++) {
 			advanceTimeSlot();
 		}
 	}
 	
+	/**
+	 * Advances the simulation to the next timeslot.
+	 */
 	private void advanceTimeSlot() {
 		assert(currentTimeSlot < timeSlotCount);
 		
 		// calculate Cn
 		for (int n = 0; n < N; n++) {
-			queueIsconnected[n][currentTimeSlot] = new BernoulliGenerator(stream, probability[n]).next() == 1;			
+			queueIsconnected[n][currentTimeSlot] = new BernoulliGenerator(stream, getProbability(n)).next() == 1;			
 		}		
 		
 		policy.allocateServer(currentTimeSlot);
@@ -92,9 +127,9 @@ public class SimulationSystem {
 			}	
 			
 			int An = new BernoulliGenerator(stream, lambda).next();
-			debugTotalAn += An;
+			//debugTotalAn += An;
 			
-			 
+			// equation found in section 2.1 
 			queueLength[n][currentTimeSlot] = Xn - Hn + An;
 		}			
 		
@@ -103,10 +138,18 @@ public class SimulationSystem {
 	}
 
 
+	/**
+	 * @param n The queue index
+	 * @param t The time slot number
+	 * @return The length of queue n at time slot t.
+	 */
 	public int getQueueLength(int n, int t) {
 		return queueLength[n][t];
 	}
 	
+	/**
+	 * @return The average queue length of all queues for the entire simulation.
+	 */
 	private double getAverageQueueOccupancy() {
 		double total = 0;
 		for (int n = 0; n < N; n++) {
@@ -117,10 +160,16 @@ public class SimulationSystem {
 	}
 
 
+	/**
+	 * @return The random number stream used for this simulation
+	 */
 	public AbstractRandomStream getRandomStream() {
 		return stream;
 	}
 	
+	/**
+	 * @param Prints the simulation results to the file specified.
+	 */
 	public void printToFile(String fileName) {
 		PrintWriter writer = null;
 		try {

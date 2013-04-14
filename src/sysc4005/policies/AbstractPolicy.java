@@ -11,7 +11,9 @@ public abstract class AbstractPolicy {
 	}
 	
 	/**
-	 * @param t Timeslot
+	 * Runs the scheduling policy on the specified time slot.
+	 * 
+	 * @param t The time slot number
 	 */
 	public abstract void allocateServer(int t);
 }

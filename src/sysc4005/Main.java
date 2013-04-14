@@ -6,7 +6,7 @@ public final class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Builder.buildSymmetricOne();
+		Runner.runSymmetricOne();
 	}
 
 }

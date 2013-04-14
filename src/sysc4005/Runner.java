@@ -5,12 +5,12 @@ import sysc4005.policies.RandomizedPolicy;
 import sysc4005.policies.RoundRobinPolicy;
 import sysc4005.random.JavaRandomStream;
 
-public class Builder {
+public class Runner {
 	
 	
 	// p = 1
 	// lambda = 0.2
-	public static void buildSymmetricOne() {
+	public static void runSymmetricOne() {
 		int N = 5;
 		int timeSlotCount = 50000;
 		double p = 1;
