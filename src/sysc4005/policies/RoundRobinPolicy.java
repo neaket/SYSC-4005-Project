@@ -1,25 +1,20 @@
 package sysc4005.policies;
 
-import sysc4005.SystemData;
+import sysc4005.SimulationSystem;
 
 public final class RoundRobinPolicy extends AbstractPolicy {
-
-	public RoundRobinPolicy(SystemData data) {
-		super(data);
-	}
-
 	int currentQueue = 0;
 	
 	@Override
 	public void allocateServer(int t) {
 		
-		if (!data.isConnected(currentQueue, t) || data.isEmpty(currentQueue, t)) {
-			data.setServerState(t, SystemData.SERVER_IDLE);
+		if (!system.isConnected(currentQueue, t) || system.isEmpty(currentQueue, t)) {
+			system.setServerState(t, SimulationSystem.SERVER_IDLE);
 		}
-		data.setServerState(t, currentQueue);
+		system.setServerState(t, currentQueue);
 		
 		currentQueue++;
-		if (currentQueue == data.getN()) {
+		if (currentQueue == system.getN()) {
 			currentQueue = 0;
 		}		
 	}

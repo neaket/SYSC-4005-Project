@@ -1,13 +1,13 @@
 package sysc4005.policies;
 
-import sysc4005.SystemData;
+import sysc4005.SimulationSystem;
 
 public abstract class AbstractPolicy {
 
-	protected SystemData data;	
+	protected SimulationSystem system;	
 	
-	public AbstractPolicy(SystemData data) {
-		this.data = data;
+	public void setSimulationSystem(SimulationSystem system) {
+		this.system = system;
 	}
 	
 	/**
