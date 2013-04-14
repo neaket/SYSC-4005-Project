@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import sysc4005.SystemData;
 
 public final class RandomizedPolicy extends AbstractPolicy {
-	SystemData data;
+	protected SystemData data;
 	
 	
 	public RandomizedPolicy(SystemData data) {
-		this.data = data;
+		super(data);
 	}
 
 	@Override
@@ -27,6 +27,6 @@ public final class RandomizedPolicy extends AbstractPolicy {
 		}
 		int n = (int) Math.floor(Math.random() * count + 1);
 		
-		data.setServerState(t, n);		
+		data.setServerState(t, connectedQueues.get(n));		
 	}	
 }

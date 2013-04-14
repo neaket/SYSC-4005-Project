@@ -27,4 +27,16 @@ public class SystemData {
 	public void setServerState(int t, int state) {
 		this.serverStates[t] = state;
 	}
+
+
+	public boolean isEmpty(int n, int t) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public int getQueueLength(int i, int t) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
