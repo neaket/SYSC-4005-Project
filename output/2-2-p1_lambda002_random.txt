@@ -1,0 +1,2 @@
+lambda = 0.02
+Average = 0.020812

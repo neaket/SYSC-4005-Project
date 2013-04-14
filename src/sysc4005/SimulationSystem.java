@@ -1,10 +1,11 @@
 package sysc4005;
 
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 import sysc4005.generators.BernoulliGenerator;
 import sysc4005.policies.AbstractPolicy;
-import sysc4005.random.JavaRandomStream;
 import sysc4005.random.AbstractRandomStream;
 
 public class SimulationSystem {
@@ -13,7 +14,7 @@ public class SimulationSystem {
 	private int N = 5;
 	private int serverStates[];
 	private double probability[];
-	private double lambda[];
+	private double lambda;
 	private int[][] queueLength;
 	private int timeSlotCount;
 	private AbstractRandomStream stream;
@@ -21,9 +22,10 @@ public class SimulationSystem {
 	private AbstractPolicy policy;
 	private boolean[][] queueIsconnected;
 	
-	public SimulationSystem(AbstractRandomStream stream, int timeSlotCount, double probability[], double lambda[], AbstractPolicy policy) {
+	private int debugTotalAn = 0;
+	
+	public SimulationSystem(AbstractRandomStream stream, int timeSlotCount, double probability[], double lambda, AbstractPolicy policy) {
 		assert(N == probability.length);
-		assert(timeSlotCount == lambda.length);
 		
 		this.stream = stream;
 		this.timeSlotCount = timeSlotCount;		
@@ -52,10 +54,13 @@ public class SimulationSystem {
 	
 	public void setServerState(int t, int state) {
 		this.serverStates[t] = state;
+		
+		//System.out.println("Server state at " + t + " is " + state);
 	}
 
 
 	public boolean isEmpty(int n, int t) {
+		if (t < 0) return true;
 		return getQueueLength(n, t) == 0;
 	}
 	
@@ -76,21 +81,24 @@ public class SimulationSystem {
 		policy.allocateServer(currentTimeSlot);
 		
 		for (int n = 0; n < N; n++) {
-			int Xn = 0;			
+			int Xn = 0;		
+			int Hn = 0;
 			if (currentTimeSlot > 0) {
 				Xn = queueLength[n][currentTimeSlot - 1];
-			}
+				
+				if (serverStates[currentTimeSlot] == n && getQueueLength(n, currentTimeSlot - 1) > 0) {
+					Hn = 1;
+				}
+			}	
 			
-			int Hn = 0;
-			if (serverStates[currentTimeSlot] == n && getQueueLength(n, currentTimeSlot) > 0) {
-				Hn = 1;
-			}
+			int An = new BernoulliGenerator(stream, lambda).next();
+			debugTotalAn += An;
 			
-			int An = new BernoulliGenerator(stream, lambda[currentTimeSlot]).next();
 			 
 			queueLength[n][currentTimeSlot] = Xn - Hn + An;
 		}			
 		
+		//System.out.println("Queue Lengths " + queueLength[0][currentTimeSlot] + " " + queueLength[1][currentTimeSlot] + " " + queueLength[2][currentTimeSlot] + " " + queueLength[3][currentTimeSlot] + " " + queueLength[4][currentTimeSlot]);
 		currentTimeSlot++;
 	}
 
@@ -99,12 +107,13 @@ public class SimulationSystem {
 		return queueLength[n][t];
 	}
 	
-	private double getAverageQueueOccupancy(int t) {
+	private double getAverageQueueOccupancy() {
 		double total = 0;
-		for (int n = 0; t < N; t++) {
+		for (int n = 0; n < N; n++) {
+			for (int t = 0; t < timeSlotCount; t++)
 			total += queueLength[n][t];
 		}		
-		return total / N;
+		return total / (N * timeSlotCount);
 	}
 
 
@@ -112,10 +121,22 @@ public class SimulationSystem {
 		return stream;
 	}
 	
-	public void printToFile(PrintWriter writer) {
-		writer.println("i, lambda, averageQueueOccupancy");
-		for (int t = 0; t < timeSlotCount; t++) {			
-			writer.println(t + ", " + lambda[t] + ", " + getAverageQueueOccupancy(t));
+	public void printToFile(String fileName) {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(fileName, "UTF-8");
+			writer.println("lambda = " + lambda);
+			//writer.println("debug An = " + debugTotalAn);
+			writer.println("Average = " + getAverageQueueOccupancy());
+		
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
 		}
+		
 	}
 }

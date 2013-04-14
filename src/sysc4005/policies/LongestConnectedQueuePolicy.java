@@ -12,11 +12,12 @@ public final class LongestConnectedQueuePolicy extends AbstractPolicy {
 		
 		int longestLength = 0; 
 		for (int n = 0; n < system.getN(); n++ ) {
-			if (system.isConnected(n, t) && !system.isEmpty(n, t)) {
-				int length = system.getQueueLength(n, t);
+			if (system.isConnected(n, t) && !system.isEmpty(n, t - 1)) {
+				int length = system.getQueueLength(n, t - 1);
 				if (length > longestLength) {
 					longestQueues.clear();
 					longestQueues.add(n);
+					longestLength = length;
 				} else if (length == longestLength) {
 					longestQueues.add(n);
 				}
