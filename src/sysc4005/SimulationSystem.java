@@ -14,7 +14,7 @@ public class SimulationSystem {
 	private int N = 5;
 	private int serverStates[];
 	private double probability[];
-	private double lambda;
+	private double lambdas[];
 	private int[][] queueLength;
 	private int timeSlotCount;
 	private AbstractRandomStream stream;
@@ -35,13 +35,13 @@ public class SimulationSystem {
 	 * @param policy The scheduling policy
 	 * @param iterations The number of iterations to run for
 	 */
-	public SimulationSystem(AbstractRandomStream stream, int timeSlotCount, double probability[], double lambda, AbstractPolicy policy, int iterations) {
+	public SimulationSystem(AbstractRandomStream stream, int timeSlotCount, double probability[], double lambdas[], AbstractPolicy policy, int iterations) {
 		assert(N == probability.length);
 		
 		this.stream = stream;
 		this.timeSlotCount = timeSlotCount;		
 		this.probability = probability;
-		this.lambda = lambda;
+		this.lambdas = lambdas;
 		this.policy = policy;
 		this.policy.setSimulationSystem(this);
 		this.iterations = iterations;
@@ -129,7 +129,7 @@ public class SimulationSystem {
 				}
 			}	
 			
-			int An = new BernoulliGenerator(stream, lambda).next();
+			int An = new BernoulliGenerator(stream, lambdas[n]).next();
 			//debugTotalAn += An;
 			
 			// equation found in section 2.1 
@@ -207,7 +207,7 @@ public class SimulationSystem {
 		try {
 			writer = new PrintWriter(new FileOutputStream(new File(fileName), true));
 			//writer.println("lambda, mean, lowerCI, upperCI");
-			writer.println(lambda + ", " + mean + ", " + lower + ", " + upper);
+			writer.println(lambdas[0] + ", " + mean + ", " + lower + ", " + upper);
 			//writer.println("debug An = " + debugTotalAn);
 			//writer.println("Average = " + getAverageQueueOccupancy());
 		
