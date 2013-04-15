@@ -1,9 +1,9 @@
 package sysc4005;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-
 import sysc4005.generators.BernoulliGenerator;
 import sysc4005.policies.AbstractPolicy;
 import sysc4005.random.AbstractRandomStream;
@@ -21,6 +21,7 @@ public class SimulationSystem {
 	private int currentTimeSlot = 0;
 	private AbstractPolicy policy;
 	private boolean[][] queueIsconnected;
+	private int iterations;
 	
 	
 	
@@ -32,8 +33,9 @@ public class SimulationSystem {
 	 * @param probability The probability that a queue is connected to the server
 	 * @param lambda The parameter in bernoulli used to determine how often new tasks are added to a queue 
 	 * @param policy The scheduling policy
+	 * @param iterations The number of iterations to run for
 	 */
-	public SimulationSystem(AbstractRandomStream stream, int timeSlotCount, double probability[], double lambda, AbstractPolicy policy) {
+	public SimulationSystem(AbstractRandomStream stream, int timeSlotCount, double probability[], double lambda, AbstractPolicy policy, int iterations) {
 		assert(N == probability.length);
 		
 		this.stream = stream;
@@ -42,6 +44,7 @@ public class SimulationSystem {
 		this.lambda = lambda;
 		this.policy = policy;
 		this.policy.setSimulationSystem(this);
+		this.iterations = iterations;
 		
 		serverStates = new int[timeSlotCount];
 		queueLength = new int[N][timeSlotCount];		
@@ -94,9 +97,9 @@ public class SimulationSystem {
 	}
 	
 	/**
-	 * Simulates the system.  Note this method can only be called once.
+	 * Simulates the system.  Note this method can only be called once for each iteration.
 	 */
-	public void simulateSystem() {
+	private void simulateSystem() {
 		for (int t = 0; t < timeSlotCount; t++) {
 			advanceTimeSlot();
 		}
@@ -167,18 +170,48 @@ public class SimulationSystem {
 		return stream;
 	}
 	
+	private void reset() 
+	{
+		currentTimeSlot = 0;	
+	}
+	
 	/**
 	 * @param Prints the simulation results to the file specified.
 	 */
-	public void printToFile(String fileName) {
+	public void runAndPrintToFile(String fileName) {
+		double totals[] = new double[iterations];	
+		double total = 0;
+		for (int i = 0; i < iterations; i++ ) {
+			reset();
+			simulateSystem();
+			totals[i] = getAverageQueueOccupancy();			
+			total += totals[i];
+		}		
+		
+		double mean = total / iterations;
+		double sampleDeviation = 0;
+		for (int i = 0; i < iterations; i++) {
+			sampleDeviation += Math.pow(totals[i] - mean, 2);
+		}
+		
+		sampleDeviation /= iterations - 1;
+		sampleDeviation = Math.sqrt(sampleDeviation);		
+		
+		// 95% CI
+		double interval = sampleDeviation / Math.sqrt(iterations) * 1.96;
+		
+		double lower = mean - interval;
+		double upper = mean + interval;
+		
 		PrintWriter writer = null;
 		try {
-			writer = new PrintWriter(fileName, "UTF-8");
-			writer.println("lambda = " + lambda);
+			writer = new PrintWriter(new FileOutputStream(new File(fileName), true));
+			//writer.println("lambda, mean, lowerCI, upperCI");
+			writer.println(lambda + ", " + mean + ", " + lower + ", " + upper);
 			//writer.println("debug An = " + debugTotalAn);
-			writer.println("Average = " + getAverageQueueOccupancy());
+			//writer.println("Average = " + getAverageQueueOccupancy());
 		
-		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
