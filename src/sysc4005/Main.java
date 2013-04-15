@@ -10,7 +10,8 @@ public final class Main {
 //		Topology1Runner.runSymmetricOneFull();
 //		Topology1Runner.runSymmetricTwoFull();
 //		Topology1Runner.runSymmetricThreeFull();
-		Topology1Runner.runAsymmetricFull();
+		//Topology1Runner.runAsymmetricFull();
+		Topology2Runner.runOne();
 	}
 
 }

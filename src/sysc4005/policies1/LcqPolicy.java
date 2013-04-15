@@ -1,10 +1,10 @@
-package sysc4005.policies;
+package sysc4005.policies1;
 
 import java.util.ArrayList;
 
-import sysc4005.SimulationSystem;
+import sysc4005.SimulationSystem1;
 
-public final class LongestConnectedQueuePolicy extends AbstractPolicy {
+public final class LcqPolicy extends AbstractPolicy1 {
 
 	@Override
 	public void allocateServer(int t) {
@@ -25,7 +25,7 @@ public final class LongestConnectedQueuePolicy extends AbstractPolicy {
 		}
 		
 		if (longestLength == 0) {
-			system.setServerState(t, SimulationSystem.SERVER_IDLE);
+			system.setServerState(t, SimulationSystem1.SERVER_IDLE);
 		} else {
 			if (longestQueues.size() == 1) {
 				system.setServerState(t, longestQueues.get(0));

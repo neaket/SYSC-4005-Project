@@ -5,24 +5,24 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import sysc4005.generators.BernoulliGenerator;
-import sysc4005.policies.AbstractPolicy;
+import sysc4005.policies2.AbstractPolicy2;
 import sysc4005.random.AbstractRandomStream;
 
-public class SimulationSystem {
+public class SimulationSystem2 {
 	public final static int SERVER_IDLE = -1;
 	
 	private int N = 5;
-	private int serverStates[];
-	private double probability[];
+	private int K = 1;
+	private int serverStates[][];
+	private double probability[][];
 	private double lambdas[];
 	private int[][] queueLength;
 	private int timeSlotCount;
 	private AbstractRandomStream stream;
 	private int currentTimeSlot = 0;
-	private AbstractPolicy policy;
-	private boolean[][] queueIsconnected;
+	private AbstractPolicy2 policy;
+	private boolean[][][] queueIsconnected;
 	private int iterations;
-	
 	
 	
 	/**
@@ -34,8 +34,9 @@ public class SimulationSystem {
 	 * @param lambda The parameter in bernoulli used to determine how often new tasks are added to a queue 
 	 * @param policy The scheduling policy
 	 * @param iterations The number of iterations to run for
+	 * @param K The number of servers
 	 */
-	public SimulationSystem(AbstractRandomStream stream, int timeSlotCount, double probability[], double lambdas[], AbstractPolicy policy, int iterations) {
+	public SimulationSystem2(AbstractRandomStream stream, int timeSlotCount, double probability[][], double lambdas[], AbstractPolicy2 policy, int iterations, int K) {
 		assert(N == probability.length);
 		
 		this.stream = stream;
@@ -46,9 +47,11 @@ public class SimulationSystem {
 		this.policy.setSimulationSystem(this);
 		this.iterations = iterations;
 		
-		serverStates = new int[timeSlotCount];
+		serverStates = new int[timeSlotCount][K];
 		queueLength = new int[N][timeSlotCount];		
-		queueIsconnected = new boolean[N][timeSlotCount];
+		queueIsconnected = new boolean[N][timeSlotCount][K];
+		
+		this.K = K;
 	}
 	
 	
@@ -63,8 +66,8 @@ public class SimulationSystem {
 	 * @param n The queue index
 	 * @return The probability that queue n is connected.
 	 */
-	private double getProbability(int n) {
-		return probability[n];
+	private double getProbability(int n, int k) {
+		return probability[n][k];
 	}
 	
 	/**
@@ -72,16 +75,16 @@ public class SimulationSystem {
 	 * @param t The time slot number
 	 * @return True if the queue is connected to the server at the time slot; otherwise false
 	 */
-	public boolean isConnected(int n, int t) {
-		return queueIsconnected[n][t];
+	public boolean isConnected(int n, int t, int k) {
+		return queueIsconnected[n][t][k];
 	}
 	
 	/**
 	 * @param t The time slot number
 	 * @param state The state, either SERVER_IDLE or the index of the queue that is connected
 	 */
-	public void setServerState(int t, int state) {
-		this.serverStates[t] = state;		
+	public void setServerState(int t, int state, int k) {
+		this.serverStates[t][k] = state;		
 		//System.out.println("Server state at " + t + " is " + state);
 	}
 
@@ -94,6 +97,11 @@ public class SimulationSystem {
 	public boolean isEmpty(int n, int t) {
 		if (t < 0) return true;
 		return getQueueLength(n, t) == 0;
+	}
+	
+	public boolean isEmpty(int n, int t, int offset) {
+		if (t < 0) return true;
+		return getQueueLength(n, t) + offset == 0;
 	}
 	
 	/**
@@ -113,7 +121,9 @@ public class SimulationSystem {
 		
 		// calculate Cn
 		for (int n = 0; n < N; n++) {
-			queueIsconnected[n][currentTimeSlot] = new BernoulliGenerator(stream, getProbability(n)).next() == 1;			
+			for (int k = 0; k < K; k++) {
+				queueIsconnected[n][currentTimeSlot][k] = new BernoulliGenerator(stream, getProbability(n, k)).next() == 1;			
+			}
 		}		
 		
 		policy.allocateServer(currentTimeSlot);
@@ -124,10 +134,16 @@ public class SimulationSystem {
 			if (currentTimeSlot > 0) {
 				Xn = queueLength[n][currentTimeSlot - 1];
 				
-				if (serverStates[currentTimeSlot] == n && getQueueLength(n, currentTimeSlot - 1) > 0) {
-					Hn = 1;
+				for (int k = 0; k < K; k++) {
+					if (serverStates[currentTimeSlot][k] == n) {
+						Hn += 1;
+					}
 				}
 			}	
+			
+			if (Hn > Xn) {
+				Hn = Xn;
+			}
 			
 			int An = new BernoulliGenerator(stream, lambdas[n]).next();
 			//debugTotalAn += An;
@@ -220,5 +236,10 @@ public class SimulationSystem {
 			}
 		}
 		
+	}
+
+
+	public int getK() {
+		return K;
 	}
 }

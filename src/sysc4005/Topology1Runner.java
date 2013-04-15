@@ -1,12 +1,11 @@
 package sysc4005;
 
-import sysc4005.policies.LongestConnectedQueuePolicy;
-import sysc4005.policies.RandomizedPolicy;
-import sysc4005.policies.RoundRobinPolicy;
+import sysc4005.policies1.LcqPolicy;
+import sysc4005.policies1.RandomizedPolicy;
+import sysc4005.policies1.RoundRobinPolicy;
 import sysc4005.random.JavaRandomStream;
 
 public class Topology1Runner {
-	
 	
 	// p = 1
 	// lambda = 0.2
@@ -25,16 +24,16 @@ public class Topology1Runner {
 			lambdas[i] = lambda;
 		}
 		
-		SimulationSystem system;
-		system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);
+		SimulationSystem1 system;
+		system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);
 		
 		system.runAndPrintToFile("2-2-p1_lambda002_random.txt");
 		
-		system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);
+		system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);
 		
 		system.runAndPrintToFile("2-2-p1_lambda002_roundRobin.txt");
 		
-		system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LongestConnectedQueuePolicy(), iterations);
+		system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);
 		
 		system.runAndPrintToFile("2-2-p1_lambda002_LCQ.txt");
 			
@@ -60,14 +59,14 @@ public class Topology1Runner {
 				lambdas[n] = lambda * i;
 			}
 			
-			SimulationSystem system;
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			SimulationSystem1 system;
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-ONE-p1_full_lambda002_random.txt");
 			
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);			
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-ONE-p1_full_lambda002_roundRobin.txt");
 			
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LongestConnectedQueuePolicy(), iterations);			
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-ONE-p1_full_lambda002_LCQ.txt");
 		}
 			
@@ -93,14 +92,14 @@ public class Topology1Runner {
 				lambdas[n] = lambda * i;
 			}
 			
-			SimulationSystem system;
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			SimulationSystem1 system;
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-TWO-p1_full_lambda002_random.txt");
 			
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);			
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-TWO-p1_full_lambda002_roundRobin.txt");
 			
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LongestConnectedQueuePolicy(), iterations);			
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-TWO-p1_full_lambda002_LCQ.txt");
 		}
 			
@@ -127,14 +126,14 @@ public class Topology1Runner {
 				lambdas[n] = lambda * i;
 			}
 			
-			SimulationSystem system;
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			SimulationSystem1 system;
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-THREE-p1_full_lambda002_random.txt");
 			
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);
 			system.runAndPrintToFile("2-2-THREE-p1_full_lambda002_roundRobin.txt");
 			
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LongestConnectedQueuePolicy(), iterations);			
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-THREE-p1_full_lambda002_LCQ.txt");
 		}
 			
@@ -163,14 +162,14 @@ public class Topology1Runner {
 				lambdas[n] = (n + 1) * lambda * i;
 			}
 			
-			SimulationSystem system;
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			SimulationSystem1 system;
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-ASYMETRIC-random.txt");
 			
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);
 			system.runAndPrintToFile("2-2-ASYMETRIC-roundRobin.txt");
 			
-			system = new SimulationSystem(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LongestConnectedQueuePolicy(), iterations);			
+			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-ASYMETRIC-LCQ.txt");
 		}
 			
