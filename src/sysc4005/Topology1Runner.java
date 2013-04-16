@@ -4,6 +4,7 @@ import sysc4005.policies1.LcqPolicy;
 import sysc4005.policies1.RandomizedPolicy;
 import sysc4005.policies1.RoundRobinPolicy;
 import sysc4005.random.JavaRandomStream;
+import sysc4005.random.TesStream;
 
 public class Topology1Runner {
 	
@@ -36,6 +37,32 @@ public class Topology1Runner {
 		system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);
 		
 		system.runAndPrintToFile("2-2-p1_lambda002_LCQ.txt");
+		
+		// TES generation
+		system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);
+		
+		system.runAndPrintToFile("2-2-TES_high_lambda002_random.txt");
+		
+		system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);
+		
+		system.runAndPrintToFile("2-2-TES_high_lambda002_roundRobin.txt");
+		
+		system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);
+		
+		system.runAndPrintToFile("2-2-TES_high_lambda002_LCQ.txt");
+		
+		
+		system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);
+		
+		system.runAndPrintToFile("2-2-TES_low_lambda002_random.txt");
+		
+		system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);
+		
+		system.runAndPrintToFile("2-2-TES_low_lambda002_roundRobin.txt");
+		
+		system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);
+		
+		system.runAndPrintToFile("2-2-TES_low_lambda002_LCQ.txt");
 			
 	}	
 	
@@ -68,6 +95,26 @@ public class Topology1Runner {
 			
 			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-ONE-p1_full_lambda002_LCQ.txt");
+			
+			//TES
+
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-ONE-TES_high_full_lambda002_random.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-ONE-TES_high_full_lambda002_roundRobin.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-ONE-TES_high_full_lambda002_LCQ.txt");
+
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-ONE-TES_low_full_lambda002_random.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-ONE-TES_low_full_lambda002_roundRobin.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-ONE-TES_low_full_lambda002_LCQ.txt");
 		}
 			
 	}
@@ -101,6 +148,25 @@ public class Topology1Runner {
 			
 			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-TWO-p1_full_lambda002_LCQ.txt");
+			
+			//TES
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-TWO-TES_high_full_lambda002_random.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-TWO-TES_high_full_lambda002_roundRobin.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-TWO-TES_high_full_lambda002_LCQ.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-TWO-TES_low_full_lambda002_random.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-TWO-TES_low_full_lambda002_roundRobin.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-TWO-TES_low_full_lambda002_LCQ.txt");
 		}
 			
 	}	
@@ -135,6 +201,25 @@ public class Topology1Runner {
 			
 			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-THREE-p1_full_lambda002_LCQ.txt");
+			
+			// TES
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-THREE-TES_high_full_lambda002_random.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-THREE-TES_high_full_lambda002_roundRobin.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-THREE-TES_high_full_lambda002_LCQ.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-THREE-TES_low_full_lambda002_random.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-THREE-TES_low_full_lambda002_roundRobin.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-THREE-TES_low_full_lambda002_LCQ.txt");
 		}
 			
 	}
@@ -171,6 +256,25 @@ public class Topology1Runner {
 			
 			system = new SimulationSystem1(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
 			system.runAndPrintToFile("2-2-ASYMETRIC-LCQ.txt");
+			
+			//TES
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-TES_high-ASYMETRIC-random.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);
+			system.runAndPrintToFile("2-2-TES_high-ASYMETRIC-roundRobin.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-TES_high-ASYMETRIC-LCQ.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-TES_low-ASYMETRIC-random.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RoundRobinPolicy(), iterations);
+			system.runAndPrintToFile("2-2-TES_low-ASYMETRIC-roundRobin.txt");
+			
+			system = new SimulationSystem1(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new LcqPolicy(), iterations);			
+			system.runAndPrintToFile("2-2-TES_low-ASYMETRIC-LCQ.txt");
 		}
 			
 	}

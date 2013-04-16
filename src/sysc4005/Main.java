@@ -7,11 +7,11 @@ public final class Main {
 	 */
 	public static void main(String[] args) {
 		//Topology1Runner.runSymmetricOne();
-//		Topology1Runner.runSymmetricOneFull();
-//		Topology1Runner.runSymmetricTwoFull();
-//		Topology1Runner.runSymmetricThreeFull();
-		//Topology1Runner.runAsymmetricFull();
-		Topology2Runner.runOne();
+		//Topology1Runner.runSymmetricOneFull();
+		//Topology1Runner.runSymmetricTwoFull();
+		//Topology1Runner.runSymmetricThreeFull();
+		Topology1Runner.runAsymmetricFull();
+		//Topology2Runner.runOne();
 	}
 
 }

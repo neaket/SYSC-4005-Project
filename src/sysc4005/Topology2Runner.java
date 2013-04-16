@@ -5,6 +5,7 @@ import sysc4005.policies2.AsLcqPolicy;
 import sysc4005.policies2.LcsfLcqPolicy;
 import sysc4005.policies2.RandomizedPolicy;
 import sysc4005.random.JavaRandomStream;
+import sysc4005.random.TesStream;
 
 public class Topology2Runner {
 	
@@ -43,6 +44,25 @@ public class Topology2Runner {
 			
 			system = new SimulationSystem2(new JavaRandomStream(), timeSlotCount, probability, lambdas, new LcsfLcqPolicy(), iterations, K);			
 			system.runAndPrintToFile("3-2-ONE_lcsfLcq.txt");
+			
+			//TES
+			system = new SimulationSystem2(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations, K);			
+			system.runAndPrintToFile("3-2-TES_high-ONE_random.txt");
+			
+			system = new SimulationSystem2(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new AsLcqPolicy(), iterations, K);
+			system.runAndPrintToFile("3-2-TES_high-ONE_asLcq.txt");
+			
+			system = new SimulationSystem2(new TesStream(0.4, 0.4), timeSlotCount, probability, lambdas, new LcsfLcqPolicy(), iterations, K);			
+			system.runAndPrintToFile("3-2-TES_high-ONE_lcsfLcq.txt");
+			
+			system = new SimulationSystem2(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new RandomizedPolicy(), iterations, K);			
+			system.runAndPrintToFile("3-2-TES_low-ONE_random.txt");
+			
+			system = new SimulationSystem2(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new AsLcqPolicy(), iterations, K);
+			system.runAndPrintToFile("3-2-TES_low-ONE_asLcq.txt");
+			
+			system = new SimulationSystem2(new TesStream(0.1, 0.1), timeSlotCount, probability, lambdas, new LcsfLcqPolicy(), iterations, K);			
+			system.runAndPrintToFile("3-2-TES_low-ONE_lcsfLcq.txt");
 		}
 			
 	}
